@@ -2,6 +2,7 @@ import numpy as np
 import os
 import pandas as pd
 from rapidfuzz import fuzz
+from PIL import Image
 
 def directory_to_dataframe(path_to_dataset: str):
 
@@ -52,3 +53,37 @@ def sneaker_class_to_brand(unique_classes: np.ndarray
     for c in unique_classes:
         class_to_brand[c] = find_brand(c)
     return class_to_brand
+
+def add_image_dimensions(df: pd.DataFrame, path_to_dataset=''):
+    """
+    Добавляет в DataFrame колонки с шириной и высотой изображений в пикселях.
+    
+    Параметры:
+    df (pd.DataFrame): Исходный DataFrame с колонкой 'path'
+    path_to_dataset (str): Базовый путь к папке с изображениями (по умолчанию текущая директория)
+    
+    Возвращает:
+    pd.DataFrame: DataFrame с добавленными колонками 'width' и 'height'
+    """
+    df = df.copy()
+    
+    widths = []
+    heights = []
+    for path in df['path']:
+        # Формируем полный путь к файлу
+        full_path = os.path.join(path_to_dataset, path)
+        
+        try:
+            with Image.open(full_path) as img:
+                width, height = img.size
+                widths.append(width)
+                heights.append(height)
+        except Exception as e:
+            print(f"Ошибка при обработке {full_path}: {str(e)}")
+            widths.append(None)
+            heights.append(None)
+    
+    df['width'] = widths
+    df['height'] = heights
+    
+    return df
