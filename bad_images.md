@@ -7,5 +7,6 @@
 ![битая](archive/sneakers-dataset/sneakers-dataset/converse_chuck_taylor_all-star_low/0048.png)
 ![битая](archive/sneakers-dataset/sneakers-dataset/new_balance_990/0039.png)
 ![битая](archive/sneakers-dataset/sneakers-dataset/nike_air_jordan_1_low/0069.png)
+![битая](archive/sneakers-dataset/sneakers-dataset/nike_dunk_low/0037.png)
 ![битая](archive/sneakers-dataset/sneakers-dataset/reebok_classic_leather/0086.png)
 ![битая](archive/sneakers-dataset/sneakers-dataset/vans_slip-on_checkerboard/0045.png)
