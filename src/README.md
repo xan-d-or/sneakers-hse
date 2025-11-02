@@ -23,3 +23,7 @@ you could have multiple pipelines, for example:
   inference pipeline that takes the features from the feature store and makes predictions in batch mode.
 
 Finally is recommended to have a script that orchestrates the execution of the pipelines. This script should could be run in a cron job or a workflow orchestrator like Airflow, Prefect, Dagster, etc.
+<<<<<<< HEAD
+=======
+</details>
+>>>>>>> dc94e68b9196e8df5579153d34e564793da582b5

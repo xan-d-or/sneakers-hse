@@ -1,4 +1,23 @@
-env
+.github
+.github/*
+.github/**
+.vscode
+.vscode/*
+.vscode/*
+.code_quality/*
+.cruft.json
+.pre-commit-config.yaml
+.python-version
+.editorconfig
+
+Makefile
+.github/
+.cruft.json
+.pre-commit-config.yaml
+.python-version
+.editorconfig
+
+Makefile
 # ignore everything in the following folders
 data/**
 
@@ -20,6 +39,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+.env/*
+.env
 .venv
 build/
 develop-eggs/
@@ -94,10 +115,10 @@ outputs
 #### > VSCode Visual Studio Code #####
 ######################################
 
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
 *.code-workspace
 
 !launch.json
