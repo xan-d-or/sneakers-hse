@@ -15,6 +15,9 @@ Makefile
 .cruft.json
 .pre-commit-config.yaml
 .python-version
+.editorconfig
+
+Makefile
 # ignore everything in the following folders
 data/**
 
