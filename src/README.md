@@ -1,3 +1,18 @@
+Чтобы отказаться от 
+```python
+import sys
+sys.path.append('/путь/к/репозиторию/src')
+```
+
+Необходимо добавить PYTHONPATH в 
+* Для **bash**: `~/.bashrc` или `~/.bash_profile`
+* Для **zsh**: `~/.zschrc`
+
+Строку `export PYTHONPATH="/путь/к/репозиторию/src:$PYTHONPATH"`.
+
+Сохранить и выполнить обновление через `source ~/.bashrc` (для bash)
+
+<details>
 # Feature/Training/Inference Pipelines
 
 File Structure based on:
@@ -23,3 +38,4 @@ you could have multiple pipelines, for example:
   inference pipeline that takes the features from the feature store and makes predictions in batch mode.
 
 Finally is recommended to have a script that orchestrates the execution of the pipelines. This script should could be run in a cron job or a workflow orchestrator like Airflow, Prefect, Dagster, etc.
+</details>
