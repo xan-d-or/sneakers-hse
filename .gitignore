@@ -10,6 +10,8 @@
 .python-version
 .editorconfig
 
+archive
+
 Makefile
 .github/
 .cruft.json
