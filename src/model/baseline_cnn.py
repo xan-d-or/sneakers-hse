@@ -78,3 +78,14 @@ class LitCNN(pl.LightningModule):
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-3)
+    
+    def predict_step(self, batch, batch_idx, dataloader_idx=0):
+        if isinstance(batch, (list, tuple)):
+            x = batch[0]
+        else:
+            x = batch
+        
+        logits = self(x)
+        preds = logits.argmax(dim=1)
+        
+        return preds
