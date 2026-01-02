@@ -67,13 +67,13 @@ async def forward(
     image_array = cv2.imdecode(np.asarray(bytearray(contents), dtype=np.uint8), cv2.IMREAD_COLOR)
     image_array = preprocess_image(image_array)
 
-    # try:
-    predicted_class = str(infer_model(image_array))
-    # except:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #         detail='Модель не смогла обработать данные'
-    #     )
+    try:
+        predicted_class = str(infer_model(image_array))
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Модель не смогла обработать данные'
+        )
     return {
         "filename": image.filename,
         "predicted_class": predicted_class
