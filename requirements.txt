@@ -8,3 +8,5 @@ opencv-python
 matplotlib
 scikit-learn
 imagehash
+catboost==1.2.8
+albumentations==2.0.8
