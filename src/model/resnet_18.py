@@ -38,8 +38,8 @@ class LitResNet18(pl.LightningModule):
         preds = logits.argmax(dim=1)
         acc = (preds == y).float().mean()
 
-        self.log("train_loss", loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("train_acc", acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train_loss", loss, on_step=False, on_epoch=True, prog_bar=True, logger=True)
+        self.log("train_acc", acc, on_step=False, on_epoch=True, prog_bar=True, logger=True)
 
         return loss
 
@@ -54,7 +54,7 @@ class LitResNet18(pl.LightningModule):
         self.val_preds.append(preds.detach().cpu())
         self.val_targets.append(y.detach().cpu())
 
-        self.log("val_batch_loss", loss, prog_bar=False)
+        self.log("val_batch_loss", loss, prog_bar=True)
         return loss
 
 
@@ -77,11 +77,11 @@ class LitResNet18(pl.LightningModule):
         f1_macro = f1_score(targets, preds, average="macro")
         f1_weighted = f1_score(targets, preds, average="weighted")
 
-        self.log("val_acc_micro", acc_micro, prog_bar=True)
-        self.log("val_acc_macro", acc_macro, prog_bar=True)
-        self.log("val_f1_micro", f1_micro, prog_bar=True)
-        self.log("val_f1_macro", f1_macro, prog_bar=True)
-        self.log("val_f1_weighted", f1_weighted, prog_bar=True)
+        self.log("val_acc_micro", acc_micro, prog_bar=True, logger=True)
+        self.log("val_acc_macro", acc_macro, prog_bar=True, logger=True)
+        self.log("val_f1_micro", f1_micro, prog_bar=True, logger=True)
+        self.log("val_f1_macro", f1_macro, prog_bar=True, logger=True)
+        self.log("val_f1_weighted", f1_weighted, prog_bar=True, logger=True)
 
 
     def configure_optimizers(self):
