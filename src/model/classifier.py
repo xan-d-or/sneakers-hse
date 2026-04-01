@@ -111,6 +111,8 @@ class LitClassifier(pl.LightningModule):
         }
 
     def predict_step(self, batch, batch_idx, dataloader_idx=0):
+        
         x = batch[0] if isinstance(batch, (list, tuple)) else batch
         logits = self(x)
-        return logits.argmax(dim=1)
+    
+        return torch.softmax(logits, dim=1)
