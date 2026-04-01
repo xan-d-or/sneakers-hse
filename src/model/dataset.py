@@ -6,14 +6,12 @@ from pathlib import Path
 
 
 class ImageDataset(Dataset):
-    def __init__(self, base_path, images_path, labels, augmenter=None):
+    def __init__(self, base_path, images_path, labels, class_to_idx, augmenter=None):
         self.base_path = Path(base_path)
         self.images_path = images_path
         self.labels = labels
         self.augmenter = augmenter
-
-        unique = sorted(set(labels))
-        self.class_to_idx = {c: i for i, c in enumerate(unique)}
+        self.class_to_idx = class_to_idx
 
     def __len__(self):
         return len(self.images_path)

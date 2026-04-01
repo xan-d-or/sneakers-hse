@@ -212,3 +212,5 @@ wheel==0.40.0
 wrapt==2.0.0
 xmljson==0.2.1
 zipp==3.23.0
+ultralytics
+ultralyticsplus
