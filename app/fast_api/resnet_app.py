@@ -7,7 +7,7 @@ from pathlib import Path
 import pickle
 import cv2
 import torch
-from src.model.resnet_18 import LitResNet18
+from sneakers_hse.model.resnet_18 import LitResNet18
 import json
 import albumentations as A
 from albumentations.pytorch import ToTensorV2

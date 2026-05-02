@@ -1,51 +1,25 @@
 [project]
-name = "Project Name"
+name = "sneakers_hse"
 version = "0.1.0"
-description = "A short description of the project."
-authors = [
-    "Peter Parker <peter.parker@web.com>",
-]
+description = "Сервис для поиска похожих кроссовок"
+authors = [{name = "Ахмадуллин Азат"}, {name = "Макаренко Александр"}, {name = "Семячкин Александр"}]
 requires-python = ">=3.10"
-readme = "README.md"
-
-dependencies = [
-
-]
 
 [project.urls]
-documentation = "https://.github.io/project-name"
-repository = "https://github.com//project-name"
-
+repository = "https://github.com/xan-d-or/sneakers-hse"
 
 [dependency-groups]
 dev = [
-    "pre-commit>=4.2.0", # Code linting and formatting
-    "pytest>=8.3.5", # Testing framework
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
     "pytest-cookies>=0.7.0",
     "pytest-cov>=6.1.1",
-    "cruft[pyproject]>=2.15.0",# Automated Cookiecutter template synchronization
-]
-
-#
-
-[tool.uv]
-package = false
-default-groups = [
-    "dev",
-#
+    "cruft[pyproject]>=2.15.0",
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
-
-[tool.coverage.paths]
-source = ["src/"]
-
-[tool.coverage.run]
-source = ["src"]
-omit = ["**/__init__.py"]
+[tool.setuptools.packages.find]
+where = ["src"]
