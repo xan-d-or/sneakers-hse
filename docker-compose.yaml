@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: sneakers
+      POSTGRES_PASSWORD: sneakers
+      POSTGRES_DB: sneakers_db
+    ports:
+      - "5432:5432"

@@ -1,4 +1,11 @@
 albumentations
 torchao
 torchvision
-transformers
+transformers==4.45.0
+ultralytics
+chromadb==1.5.8 # Чтобы не было проблем с чтением векторной БД из s3
+sqlalchemy
+fastapi
+boto3
+awswrangler
+python-multipart

@@ -97,6 +97,7 @@ target/
 # Database
 *.db
 *.rdb
+chroma_db
 
 # Caches
 .mypy_cache/
