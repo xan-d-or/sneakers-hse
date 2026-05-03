@@ -8,8 +8,10 @@ import numpy
 
 
 class LitDataImageDataset(Dataset):
-    def __init__(self, input_dir, label2idx, transform=None, train=True):
-        self.ds = StreamingDataset(input_dir, shuffle=train, drop_last=train)
+    def __init__(self, input_dir, label2idx, transform=None, train=True,
+                 cache_dir=None, **kwargs):
+        self.ds = StreamingDataset(input_dir, shuffle=train, drop_last=train, 
+                                   cache_dir=cache_dir, **kwargs)
         self.transform = transform
         self.label2idx = label2idx
     

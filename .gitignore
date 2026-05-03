@@ -18,6 +18,7 @@ Makefile
 .editorconfig
 notebooks/5-models/lightning_logs
 Makefile
+s3_keys*
 # ignore everything in the following folders
 data/**
 
