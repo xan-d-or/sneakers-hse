@@ -3,7 +3,9 @@ import chromadb
 class VectorStore:
     def __init__(self, persist_dir="./chroma_db"):
         self.client = chromadb.PersistentClient(path=persist_dir)
-        self.collection = self.client.get_or_create_collection("embeddings")
+        self.collection = self.client.get_or_create_collection(
+            "embeddings",
+            metadata={"hnsw:space": "cosine"})
 
     def add(self, embeddings, ids, metadatas=None):
         self.collection.add(
