@@ -16,5 +16,4 @@ class DINOv2Embedder:
             outputs = self.model(**inputs)
         cls_tokens = outputs.last_hidden_state[:, 0, :]
         cls_tokens = cls_tokens.cpu().numpy()
-        norms = np.linalg.norm(cls_tokens, axis=1, keepdims=True)
-        return cls_tokens / norms
+        return cls_tokens
