@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from sneakers_hse.data.utils.s3_tools import S3Client
 
 from sneakers_hse.inference.detection_model import YOLODetector
-from sneakers_hse.inference.embedding_model import DinoEmbedder
+from sneakers_hse.inference.embedding_model import DINOv2Embedder
 from sneakers_hse.inference.vector_store import VectorStore
 from sneakers_hse.inference.logger import setup_logger
 
@@ -23,8 +23,8 @@ PROJECT_ROOT_PATH = Path(os.getenv("PROJECT_ROOT_PATH"))
 s3 = S3Client(aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
               aws_secret_access_key=os.getenv("AWS_SECRET_KEY"))
 
-
-if os.getenv("PROD_EXECUTION_FLG") == 1:
+if os.getenv("PROD_EXECUTION_FLG") == '1':
+    logger.info('Скачиваем векторную БД')
     s3.download_folder_from_s3_parallel(
         bucket_name='sneakers-hse-images-test',
         s3_prefix=os.getenv("EMBEDDINGS_S3_PATH"),
@@ -36,7 +36,7 @@ app = FastAPI()
 
 detector = YOLODetector(str(PROJECT_ROOT_PATH / 
                             'models/yolov8n-clothing-detection.pt'))
-embedder = DinoEmbedder()
+embedder = DINOv2Embedder()
 vector_store = VectorStore()
 
 @app.post("/search")
@@ -61,8 +61,8 @@ async def search(image: UploadFile = File(...)):
     res = []
     # Если нашли несколько ббоксов с обувью, то для каждого находим ближайших соседейы
     for bbox in bboxes.values():
-        embedding = embedder.encode(bbox)
-        results = vector_store.search(embedding)
+        embedding = embedder.encode_batch([bbox])
+        results = vector_store.search(embedding[0])
         logger.info(results)
         res.append(results)
     

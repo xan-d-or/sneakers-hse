@@ -93,6 +93,7 @@ target/
 
 # DotEnv configuration
 .env
+tmp
 
 # Database
 *.db
