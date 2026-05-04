@@ -9,4 +9,6 @@ fastapi
 boto3
 awswrangler
 python-multipart
-faiss
+scikit-learn
+ipywidgets
+jupyter
