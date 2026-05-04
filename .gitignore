@@ -154,6 +154,7 @@ out/
 # Spyder
 .spyproject/
 
+.claude/
 *.pt
 123.txt
 .gitignore
