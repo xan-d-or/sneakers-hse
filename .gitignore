@@ -2,6 +2,8 @@
 .github/*
 .github/**
 .vscode
+.env3.12
+.env3.12/*
 .vscode/*
 .vscode/*
 .code_quality/*
@@ -93,10 +95,12 @@ target/
 
 # DotEnv configuration
 .env
+tmp
 
 # Database
 *.db
 *.rdb
+chroma_db
 
 # Caches
 .mypy_cache/
@@ -153,6 +157,7 @@ out/
 # Spyder
 .spyproject/
 
+.claude/
 *.pt
 123.txt
 .gitignore
@@ -1423,3 +1428,4 @@ src/sneakers-hse-service/data/postgres/pg_stat/pgstat.stat
 src/sneakers-hse-service/data/postgres/pg_subtrans/0000
 src/sneakers-hse-service/data/postgres/pg_wal/000000010000000000000001
 src/sneakers-hse-service/data/postgres/pg_xact/0000
+poetry.lock
