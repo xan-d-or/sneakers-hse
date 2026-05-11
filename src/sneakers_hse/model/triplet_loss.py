@@ -27,7 +27,7 @@ class EmbeddingDataset(Dataset):
 
 
 class LitTripletModel(lightning.LightningModule):
-    def __init__(self, input_dim=768, embedding_dim=768, lr=1e-3, margin=0.2):
+    def __init__(self, input_dim=768, embedding_dim=768, lr=1e-3, margin=0.2, dropout=0.3):
         super().__init__()
         self.save_hyperparameters()
         self.lr = lr
@@ -35,8 +35,10 @@ class LitTripletModel(lightning.LightningModule):
         self.model = nn.Sequential(
             nn.Linear(input_dim, 1024),
             nn.ReLU(),
+            nn.Dropout(dropout),
             nn.Linear(1024, 1024),
             nn.ReLU(),
+            nn.Dropout(dropout),
             nn.Linear(1024, embedding_dim),
         )
 
