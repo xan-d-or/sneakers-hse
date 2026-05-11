@@ -2,6 +2,8 @@
 .github/*
 .github/**
 .vscode
+.env3.12
+.env3.12/*
 .vscode/*
 .vscode/*
 .code_quality/*
