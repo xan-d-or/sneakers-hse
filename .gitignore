@@ -1428,3 +1428,4 @@ src/sneakers-hse-service/data/postgres/pg_stat/pgstat.stat
 src/sneakers-hse-service/data/postgres/pg_subtrans/0000
 src/sneakers-hse-service/data/postgres/pg_wal/000000010000000000000001
 src/sneakers-hse-service/data/postgres/pg_xact/0000
+poetry.lock
