@@ -149,7 +149,8 @@ out/
 /.emacs.desktop
 /.emacs.desktop.lock
 *.elc
-
+chroma_db/*
+poetry.lock
 # Spyder
 .spyproject/
 
