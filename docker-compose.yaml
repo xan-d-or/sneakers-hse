@@ -1,11 +1,45 @@
-version: '3.8'
+version: "3.9"
 
 services:
   postgres:
     image: postgres:15
+    container_name: sneakers_hse_postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: sneakers
-      POSTGRES_PASSWORD: sneakers
-      POSTGRES_DB: sneakers_db
+      POSTGRES_USER: sneakers_hse_user
+      POSTGRES_PASSWORD: sneakers_hse_password
+      POSTGRES_DB: sneakers_hse_service
     ports:
       - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - sneakers_net
+    healthcheck:
+      test: ["CMD-SPEC", "pg_isready", "-U", "sneakers_hse_user", "-d", "sneakers_hse_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: sneakers_hse_api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PROJECT_ROOT_PATH: /app
+      DATABASE_URL: postgresql://sneakers_hse_user:sneakers_hse_password@postgres:5432/sneakers_hse_service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./models:/app/models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sneakers_net
+
+networks:
+  sneakers_net:
+    driver: bridge
