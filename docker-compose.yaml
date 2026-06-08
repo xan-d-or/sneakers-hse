@@ -39,6 +39,18 @@ services:
     networks:
       - sneakers_net
 
+  bot:
+    build: ./bot
+    container_name: sneakers_hse_bot
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      API_URL: http://sneakers_hse_api:8000
+    depends_on:
+      - api
+    networks:
+      - sneakers_net
+
 networks:
   sneakers_net:
     driver: bridge
