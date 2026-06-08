@@ -87,10 +87,11 @@ async def lifespan(app: FastAPI):
         persist_dir=str(settings.project_root_path / "chroma_db")
     )
 
-    # MLflow needs standard boto3 env var names for S3 artifact access
+    # MLflow needs standard boto3 env var names and Yandex S3 endpoint
     import os
     os.environ["AWS_ACCESS_KEY_ID"] = settings.aws_access_key
     os.environ["AWS_SECRET_ACCESS_KEY"] = settings.aws_secret_key
+    os.environ.setdefault("MLFLOW_S3_ENDPOINT_URL", "https://storage.yandexcloud.net")
 
     logger.info(f"Loading triplet model from MLflow: {settings.triplet_model_alias}")
     mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
