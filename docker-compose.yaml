@@ -16,7 +16,7 @@ services:
     networks:
       - sneakers_net
     healthcheck:
-      test: ["CMD-SPEC", "pg_isready", "-U", "sneakers_hse_user", "-d", "sneakers_hse_service"]
+      test: ["CMD-SHELL", "pg_isready -U sneakers_hse_user -d sneakers_hse_service"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -29,6 +29,7 @@ services:
     environment:
       PROJECT_ROOT_PATH: /app
       DATABASE_URL: postgresql://sneakers_hse_user:sneakers_hse_password@postgres:5432/sneakers_hse_service
+      MLFLOW_S3_ENDPOINT_URL: https://storage.yandexcloud.net
     ports:
       - "8000:8000"
     volumes:

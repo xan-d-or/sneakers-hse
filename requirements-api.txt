@@ -15,3 +15,5 @@ sqlalchemy
 psycopg2-binary
 pillow
 mlflow
+pytorch-lightning
+pytorch-metric-learning
