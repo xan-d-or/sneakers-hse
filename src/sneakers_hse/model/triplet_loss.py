@@ -27,10 +27,14 @@ class EmbeddingDataset(Dataset):
 
 
 class LitTripletModel(lightning.LightningModule):
-    def __init__(self, input_dim=768, embedding_dim=768, lr=1e-3, margin=0.2, dropout=0.3):
+    def __init__(self, input_dim=768, embedding_dim=768, lr=3e-4, margin=0.2, dropout=0.1, max_epochs=50):
         super().__init__()
         self.save_hyperparameters()
         self.lr = lr
+        self.max_epochs = max_epochs
+        self._train_losses = []
+        self._train_triplets = []
+        self._val_losses = []
 
         self.model = nn.Sequential(
             nn.Linear(input_dim, 1024),
@@ -54,20 +58,45 @@ class LitTripletModel(lightning.LightningModule):
         projected = self(x)
         hard_pairs = self.miner(projected, y)
         loss = self.loss_fn(projected, y, hard_pairs)
-        self.log("train_loss", loss, prog_bar=True)
+        self._train_losses.append(loss.detach())
+        self._train_triplets.append(hard_pairs[0].numel())
         return loss
+
+    def on_train_epoch_end(self):
+        avg_loss = torch.stack(self._train_losses).mean().item()
+        avg_triplets = sum(self._train_triplets) / len(self._train_triplets)
+        self._train_losses.clear()
+        self._train_triplets.clear()
+        self.log("train_loss", avg_loss, prog_bar=True, logger=False)
+        if self.logger:
+            self.logger.log_metrics(
+                {"train_loss": avg_loss, "num_triplets": avg_triplets},
+                step=self.current_epoch,
+            )
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
         projected = self(x)
         hard_pairs = self.miner(projected, y)
         loss = self.loss_fn(projected, y, hard_pairs)
-        self.log("val_loss", loss, prog_bar=True)
+        self._val_losses.append(loss.detach())
         return loss
 
+    def on_validation_epoch_end(self):
+        if not self._val_losses:
+            return
+        avg_loss = torch.stack(self._val_losses).mean().item()
+        self._val_losses.clear()
+        self.log("val_loss", avg_loss, prog_bar=True, logger=False)
+        if self.logger:
+            self.logger.log_metrics({"val_loss": avg_loss}, step=self.current_epoch)
+
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=10)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=1e-4)
+        # eta_min > 0 ensures LR doesn't collapse to 0 near the end
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer, T_max=self.max_epochs, eta_min=1e-5
+        )
         return {"optimizer": optimizer, "lr_scheduler": scheduler}
 
 
