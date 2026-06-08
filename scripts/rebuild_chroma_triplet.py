@@ -25,7 +25,7 @@ model.eval()
 print("Model loaded.")
 
 client = chromadb.PersistentClient(path=CHROMA_DIR)
-src = client.get_collection(SRC_COLLECTION, metadata={"hnsw:space": "cosine"})
+src = client.get_collection(SRC_COLLECTION)
 total = src.count()
 print(f"Source collection '{SRC_COLLECTION}': {total} items")
 
