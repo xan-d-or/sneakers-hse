@@ -14,3 +14,4 @@ boto3
 sqlalchemy
 psycopg2-binary
 pillow
+mlflow
