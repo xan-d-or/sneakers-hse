@@ -1,0 +1,15 @@
+# Deps for the FastAPI inference service only (no training/notebook stuff)
+torch
+torchvision
+transformers==4.45.0
+ultralytics
+chromadb==1.5.8
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+python-multipart
+boto3
+sqlalchemy
+psycopg2-binary
+pillow
