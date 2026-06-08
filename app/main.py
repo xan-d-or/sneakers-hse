@@ -3,6 +3,8 @@ from pathlib import Path
 import io
 import time
 
+import mlflow.pytorch
+import torch
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
@@ -32,6 +34,8 @@ class Settings(BaseSettings):
     embeddings_s3_path: str = "chroma_db"
     yolo_preprocessed_dataset_prefix: str = ""
     prod_execution_flg: str = "0"
+    mlflow_tracking_uri: str = "http://103.76.55.124:5050"
+    triplet_model_alias: str = "models:/triplet_loss@PRD"
 
 
 settings = Settings()
@@ -83,6 +87,13 @@ async def lifespan(app: FastAPI):
         persist_dir=str(settings.project_root_path / "chroma_db")
     )
 
+    logger.info(f"Loading triplet model from MLflow: {settings.triplet_model_alias}")
+    mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
+    triplet_model = mlflow.pytorch.load_model(settings.triplet_model_alias)
+    triplet_model.eval()
+    app.state.triplet_model = triplet_model
+    logger.info("Triplet model loaded")
+
     (settings.project_root_path / "tmp").mkdir(exist_ok=True)
 
     yield
@@ -131,8 +142,15 @@ async def search(image: UploadFile = File(...)):
 
     results: list[SearchHit] = []
     for bbox in bboxes.values():
-        embedding = app.state.embedder.encode_batch([bbox])
-        raw = app.state.vector_store.search(embedding[0])
+        # DINOv2 embedding
+        dinov2_emb = app.state.embedder.encode_batch([bbox])  # (1, 768)
+
+        # Triplet model refinement
+        with torch.no_grad():
+            emb_tensor = torch.tensor(dinov2_emb, dtype=torch.float32)
+            refined_emb = app.state.triplet_model(emb_tensor).numpy()
+
+        raw = app.state.vector_store.search(refined_emb[0])
         results.append(SearchHit(
             ids=raw["ids"][0],
             distances=raw["distances"][0],
