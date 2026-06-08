@@ -1,11 +1,16 @@
 albumentations
 torchao
 torchvision
+torch
 transformers==4.45.0
 ultralytics
 chromadb==1.5.8 # Фиксируем конкретную версию, чтобы не было проблем с чтением векторной БД из s3. Использую python3.11
 sqlalchemy
+psycopg2-binary
 fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
 boto3
 awswrangler
 python-multipart
@@ -14,3 +19,6 @@ ipywidgets
 jupyter
 pytorch-metric-learning
 omegaconf
+polars
+pillow
+pytorch-lightning
