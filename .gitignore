@@ -1429,3 +1429,9 @@ src/sneakers-hse-service/data/postgres/pg_subtrans/0000
 src/sneakers-hse-service/data/postgres/pg_wal/000000010000000000000001
 src/sneakers-hse-service/data/postgres/pg_xact/0000
 poetry.lock
+
+# Model weights
+*.pth
+
+# MLflow local runs
+notebooks/5-models/1/
