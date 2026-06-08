@@ -47,6 +47,7 @@ class SearchHit(BaseModel):
     ids: list[str]
     distances: list[float]
     metadatas: list[dict]
+    image_urls: list[str]
 
 
 class SearchResponse(BaseModel):
@@ -157,10 +158,24 @@ async def search(image: UploadFile = File(...)):
             refined_emb = app.state.triplet_model(emb_tensor).numpy()
 
         raw = app.state.vector_store.search(refined_emb[0])
+
+        image_urls = [
+            app.state.s3.client.generate_presigned_url(
+                "get_object",
+                Params={
+                    "Bucket": "sneakers-hse-images-test",
+                    "Key": f"{settings.yolo_preprocessed_dataset_prefix}/{img_id}",
+                },
+                ExpiresIn=3600,
+            )
+            for img_id in raw["ids"][0]
+        ]
+
         results.append(SearchHit(
             ids=raw["ids"][0],
             distances=raw["distances"][0],
             metadatas=raw["metadatas"][0],
+            image_urls=image_urls,
         ))
 
     latency_ms = (time.perf_counter() - t0) * 1000
